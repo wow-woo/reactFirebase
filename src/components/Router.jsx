@@ -5,7 +5,7 @@ import Auth from "../routes/Auth";
 import Home from "../routes/Home";
 import Navigation from "./Navigation";
 
-export default function Router({ isLoggedIn }) {
+export default function Router({ currentUser, isLoggedIn }) {
   return (
     <HashRouter>
       <Navigation isLoggedIn={isLoggedIn} />
@@ -13,7 +13,7 @@ export default function Router({ isLoggedIn }) {
         {isLoggedIn ? (
           <>
             <Route exact path='/'>
-              <Home />
+              <Home currentUser={currentUser} />
             </Route>
 
             <Route exact path='/profile'>

@@ -4,7 +4,6 @@ import { useHistory, useLocation } from "react-router-dom";
 
 export default function Profile() {
   const history = useHistory();
-  const location = useLocation();
 
   const onLogout = (e) => {
     fb_auth.signOut();

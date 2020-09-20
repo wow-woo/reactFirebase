@@ -5,11 +5,14 @@ import { fb_auth } from "../server/firebaseAPI.js";
 function App() {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     fb_auth.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(user);
+
+        setCurrentUser(user);
       } else {
         setIsLoggedIn(false);
       }
@@ -17,7 +20,11 @@ function App() {
     });
   }, []);
 
-  return loading ? <div>loading...</div> : <Router isLoggedIn={isLoggedIn} />;
+  return loading ? (
+    <div>loading...</div>
+  ) : (
+    <Router isLoggedIn={isLoggedIn} currentUser={currentUser} />
+  );
 }
 
 export default App;
