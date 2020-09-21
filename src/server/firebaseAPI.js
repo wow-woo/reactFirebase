@@ -17,3 +17,5 @@ export const fb = firebase;
 export const fb_db = firebase.firestore();
 
 export const fb_auth = firebase.auth();
+
+export const fb_storage = firebase.storage();

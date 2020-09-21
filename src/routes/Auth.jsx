@@ -23,6 +23,7 @@ export default function Auth() {
 
     try {
       if (newAccount) {
+        console.log("new account");
         user = await fb_auth.createUserWithEmailAndPassword(
           form.email,
           form.password

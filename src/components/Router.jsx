@@ -17,7 +17,7 @@ export default function Router({ currentUser, isLoggedIn }) {
             </Route>
 
             <Route exact path='/profile'>
-              <Profile />
+              <Profile currentUser={currentUser} />
             </Route>
           </>
         ) : (

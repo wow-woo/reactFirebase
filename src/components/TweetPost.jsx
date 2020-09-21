@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import { fb_db } from "server/firebaseAPI";
+import { fb_db, fb_storage } from "server/firebaseAPI";
 
 export default function TweetPost({ tweek, isOwn }) {
   const [editMode, setEditMode] = useState(false);
-  const [newTweet, setNewTweet] = useState(tweek.text);
+  const [newTweet, setNewTweet] = useState({
+    title: tweek.title,
+    text: tweek.text,
+  });
 
   const onDeleteHandler = async (e) => {
     const isConfirmed = window.confirm("Are you sure to delete this tweet?");
 
     if (isConfirmed) {
-      await fb_db.doc(`wooitter/${tweek.id}`).delete();
+      await Promise.allSettled([
+        fb_db.doc(`wooitter/${tweek.id}`).delete(),
+        tweek.img && fb_storage.refFromURL(tweek.img).delete(),
+      ]);
     }
   };
 
@@ -18,13 +24,23 @@ export default function TweetPost({ tweek, isOwn }) {
   };
 
   const onWriteHandler = (e) => {
-    setNewTweet(e.target.value);
+    console.log("1", e.target.name);
+    console.log("2", e.target.value);
+
+    setNewTweet({
+      ...newTweet,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const submitHandler = (e) => {
+  const updateHandler = (e) => {
     e.preventDefault();
-    fb_db.doc(`wooitter/${tweek.id}`).update({ text: newTweet });
+    fb_db.doc(`wooitter/${tweek.id}`).update(newTweet);
 
+    setNewTweet({
+      title: "",
+      text: "",
+    });
     setEditMode(false);
   };
 
@@ -33,16 +49,33 @@ export default function TweetPost({ tweek, isOwn }) {
       <form>
         <input
           type='text'
-          placeholder='Edit your tweet'
-          value={newTweet}
+          name='title'
+          placeholder={tweek.title}
+          maxLength={50}
+          value={newTweet.title}
           onChange={onWriteHandler}
         />
-        <input type='submit' value='Update' onClick={submitHandler} />
+
+        <input
+          type='text'
+          name='text'
+          placeholder={tweek.text}
+          value={newTweet.text}
+          onChange={onWriteHandler}
+        />
+
+        <input type='submit' value='Update' onClick={updateHandler} />
       </form>
     </>
   ) : (
     <>
-      <h4>{tweek.text}</h4>
+      <h2>{tweek.title}</h2>
+      <img
+        src={tweek.img}
+        alt={`${tweek.writer}'s tweet`}
+        style={{ width: "350px", height: "300px" }}
+      />
+      <p>{tweek.text}</p>
       <h4>{JSON.stringify(tweek)}</h4>
     </>
   );

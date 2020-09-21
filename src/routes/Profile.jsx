@@ -1,9 +1,26 @@
-import React from "react";
-import { fb_auth } from "server/firebaseAPI";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { fb_auth, fb_db } from "server/firebaseAPI";
+import { useHistory } from "react-router-dom";
 
-export default function Profile() {
+export default function Profile({ currentUser }) {
   const history = useHistory();
+
+  const getAllTweeks = async () => {
+    const tweet = await fb_db
+      .collection(`wooitter`)
+      .where("writer", "==", currentUser.uid)
+      .orderBy("createdAt")
+      .get();
+
+    tweet.docs.map((doc) => {
+      return console.log(doc.data());
+    });
+
+    // await fb_db.collection(`wooitter/${currentUser}`).
+  };
+  useEffect(() => {
+    getAllTweeks();
+  });
 
   const onLogout = (e) => {
     fb_auth.signOut();
