@@ -1,7 +1,8 @@
-import TweetPost from "components/TweetPost";
+import TweetPost from "../components/TweetPost";
 import React, { useEffect, useState } from "react";
 import { fb_db, fb_storage } from "server/firebaseAPI";
 import { v4 } from "uuid";
+
 export default function Home({ currentUser }) {
   const [tweek, setTweek] = useState({
     title: "",
@@ -27,9 +28,10 @@ export default function Home({ currentUser }) {
       setTweeks(arr);
     });
   };
+
   useEffect(() => {
     subscribeTweeks();
-    return subscribeTweeks;
+    return subscribeTweeks();
   }, []);
 
   const createNewTweek = async (publicURL) => {
@@ -91,7 +93,6 @@ export default function Home({ currentUser }) {
     setBlobURL(false);
     fileField.value = "";
   };
-
   return (
     <div>
       <form onSubmit={onSubmitHandler}>
@@ -135,7 +136,7 @@ export default function Home({ currentUser }) {
           <TweetPost
             key={tweek.id}
             tweek={tweek}
-            isOwn={tweek.writer === currentUser.uid}
+            isOwner={tweek.writer === currentUser.uid}
           />
         ))}
       </div>

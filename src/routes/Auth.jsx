@@ -12,14 +12,11 @@ export default function Auth() {
   const changeHandler = (e) => {
     const { name, value } = e.currentTarget;
 
-    console.log({ ...form, [name]: value });
-
     setForm({ ...form, [name]: value });
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(e);
 
     try {
       if (newAccount) {
@@ -38,7 +35,6 @@ export default function Auth() {
   };
 
   const onSocial = async (e) => {
-    console.log(e.target);
     const {
       target: { name },
     } = e;

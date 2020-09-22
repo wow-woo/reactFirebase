@@ -15,15 +15,31 @@ function App() {
         setCurrentUser(user);
       } else {
         setIsLoggedIn(false);
+
+        setIsLoggedIn(null);
       }
       setLoading(false);
     });
   }, []);
 
+  const refreshAuth = (e) => {
+    const user = fb_auth.currentUser;
+
+    setCurrentUser({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  };
+
   return loading ? (
     <div>loading...</div>
   ) : (
-    <Router isLoggedIn={isLoggedIn} currentUser={currentUser} />
+    <Router
+      isLoggedIn={isLoggedIn}
+      currentUser={currentUser}
+      refreshAuth={refreshAuth}
+    />
   );
 }
 

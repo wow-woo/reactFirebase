@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { fb_db, fb_storage } from "server/firebaseAPI";
 
-export default function TweetPost({ tweek, isOwn }) {
+export default function TweetPost({ tweek, isOwner }) {
   const [editMode, setEditMode] = useState(false);
   const [newTweet, setNewTweet] = useState({
-    title: tweek.title,
+    title: tweek,
     text: tweek.text,
   });
 
@@ -80,7 +80,7 @@ export default function TweetPost({ tweek, isOwn }) {
     </>
   );
 
-  const btns = isOwn && (
+  const btns = isOwner && (
     <div>
       <button onClick={onDeleteHandler}>Delete</button>
       <button onClick={onEditModeHandler}>
