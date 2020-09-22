@@ -9,8 +9,6 @@ export default function Profile({ currentUser, refreshAuth }) {
   const [displayName, setDisplayName] = useState("");
   const [profilePicture, setProfilePicture] = useState(currentUser.displayName);
 
-  const profile_picture = document.querySelector(".profile_picture");
-
   const getAllTweeks = async () => {
     const tweet = await fb_db
       .collection(`wooitter`)
